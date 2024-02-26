@@ -48,6 +48,10 @@ def create_universe():
                 prints("Invalid choice. Please try again.")
                 print()
         else:
+            # Create directory for the new universe
+            universe_path = os.path.join("Saves", f"U {uid}")
+            os.makedirs(universe_path, exist_ok=True)
+
             universe_data[uid] = {}
             save_universe(uid)
             create_character(uid)

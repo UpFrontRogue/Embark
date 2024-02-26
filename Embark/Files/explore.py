@@ -81,7 +81,12 @@ def explore(uid, character):
                     explore(uid, character)
         NpcTestLevel(uid, character, npc)
     elif outcome['action'] == 'Elite':
-        enemy = random.choice(elites)
+        level_req = character['Stats']['Level']
+        enemy_pool = []
+        for e in elites:
+            if e.base_level <= level_req:
+                enemy_pool.append(e)
+        enemy = random.choice(enemy_pool)
         if character['Stats']['Level'] >= 9:
             prints('Elite Incoming!')
             battle(uid, character, enemy)
@@ -183,14 +188,16 @@ def encounter(uid, character, npc):
     if npc.uid is None:
         npc.uid = uid
     if npc.name == 'Sir Lance':
-        prints(f"{npc.name}: WHY HELLO! Fellow Traveler!")
+        printn(f"WHY HELLO! Fellow Traveler!", npc = npc)
         print()
         prints('You go to start making conversation, and then realize they were talking to someone else behind you.')
         print()
         prints('Actually upon further inspection they are talking to no one behind you, like a loonie.')
     else:
-        prints(f"{npc.name}: Hello I'm a level {npc.level}.")
-        prints(f"I come from the universe {npc.uid}")
+        printn(f"Hello I'm a level {npc.level}.", npc = npc)
+        printn(f"I come from the universe {npc.uid}", npc = npc)
+        print()
+        prints('You watch as they walk away, like you knew what that mean.')
         print()
 
 def easter_eggs():
@@ -269,7 +276,7 @@ def merchant(uid, character):
         ints = [3, 4, 5, 6, 7, 9, 13]
         cint = min(random.choice(ints), len(merch))
         minv = random.sample(merch, cint)
-        qc = [0.25, 0.35, 0.55, 0.85, 1.15, 1.35, 1.45, 1.65, 1.85]
+        qc = [0.25, 0.35, 0.55, 0.85, 1.15, 1.35, 1.45, 1.65, 1.85, 5.67]
         for item in minv:
             quant = int(random.choice(qc) * item.quantity)
             item.quantity = max(quant, 1)
@@ -277,6 +284,7 @@ def merchant(uid, character):
             char = character['Attributes']['Charisma']
             inflate = round((char * (-0.05)) + 1.65, 2)
             sellp = int(round(gold * inflate, 0))
+            item.gold == sellp
 
 
         while minv:
@@ -297,6 +305,7 @@ def merchant(uid, character):
                     minv == buy_item(character, selected_item, gold_cost, minv)
                 elif choice == 0:
                     prints("You and the Merchant parted.")
+                    break
                 else:
                     prints("Invalid choice. Please try again.")
             else:

@@ -2,8 +2,8 @@ import time
 import random
 from found import *
 
-version = '0.12.1.1'
-debug_mode = True
+version = '0.12.1.2'
+debug_mode = False
 pro_mode = False
 giggles = False
 universe_data = {}
